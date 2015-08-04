@@ -37,6 +37,8 @@ class Wish(db.Model):
 	user_email = db.Column(db.String(50), ForeignKey('users.email'
 		), nullable=False)
 
+#needs repr!!!
+
 
 #Helper functions 
 
