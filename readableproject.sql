@@ -1,0 +1,29 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE User(
+user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+email VARCHAR(50) NOT NULL);
+INSERT INTO "User" VALUES(1,'email@mail.com');
+CREATE TABLE Share(
+share_id INTEGER PRIMARY KEY AUTOINCREMENT,
+s_size INTEGER(2) NOT NULL,
+s_style VARCHAR(6) NOT NULL,
+s_item_type VARCHAR(20) NOT NULL,
+s_active BOOLEAN NOT NULL DEFAULT 1,
+s_pic VARCHAR(200), 
+user_email VARCHAR(50) NOT NULL 
+REFERENCES User );
+INSERT INTO "Share" VALUES(1,10,'swim','one piece',1,'email@mail.com');
+CREATE TABLE Wish(
+wish_id INTEGER PRIMARY KEY AUTOINCREMENT,
+w_size INTEGER(2) NOT NULL,
+w_style VARCHAR(6) NOT NULL,
+w_item_type VARCHAR(20) NOT NULL,
+w_active BOOLEAN NOT NULL DEFAULT 1,
+w_pic VARCHAR(200),
+user_email VARCHAR(50) NOT NULL
+REFERENCES User);
+DELETE FROM sqlite_sequence;
+INSERT INTO "sqlite_sequence" VALUES('User',1);
+INSERT INTO "sqlite_sequence" VALUES('Share',1);
+COMMIT;
