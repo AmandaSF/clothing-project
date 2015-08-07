@@ -1,1 +1,53 @@
-form.html
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="register" method="POST">
+
+	<div>
+		<label>Email Address:
+			<input type="email" name="email">
+		</label>
+	</div>
+
+	<div>
+		<label>Is this listing for an item you want, or an item you have to share?
+			<input type="radio" name="post_type" value="wish">I want this item.
+			<input type="radio" name="post_type" value="share">This item is to share.
+		</label>
+	</div>
+
+	<div>
+		<label>Clothing Size:
+			{% for size in sizes %}
+			<input type="radio" name="size" value="{{ size }}">
+			{% endfor %}
+		</label>
+	</div>
+
+	<div>
+		<label>Clothing Style:
+			{% for style in style_code %}
+			<input type="radio" name="style" value="{{ style }}">
+			{% endfor %}
+		</label>
+	</div>
+
+	<div>
+		<label>Clothing Type:
+			{% for type in item_type %}
+			<input type="radio" name="type" value="{{ type }}">
+			{% endfor %}
+		</label>
+	</div>
+
+	<div>
+		<label>Optional Photo Url:
+			<input type="text" name="photo_url">
+		</label>
+	</div>
+
+	<div>
+		<input type="submit">
+
+
+{% endblock %}
