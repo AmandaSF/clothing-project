@@ -3,4 +3,26 @@
 
 <h2>Best, most precious, homepage</h2>
 
+<div>
+	Here are items that people sharing:
+	<ul>
+	{% for item in share %}
+	<li>
+	There is a {{ item.style }} {{ item.item_type }} available in size {{ item.size }}. If this is an item you'd like, the contact info is as follows; {{ item.user_email }} 
+	</li>
+	{% endfor %}
+	</ul>
+</div>
+
+<div>
+	Here are items that people are looking for:
+	<ul>
+	{% for item in wish %}
+	<li>
+	A user needs a {{ item.style }} {{ item.item_type }} in size {{ item.size}}. If you have this item, please contact the user at {{ item.user_email }}
+	</li>
+	{% endfor %}
+	</ul>
+</div>
+
 {% endblock %}

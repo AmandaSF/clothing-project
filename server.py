@@ -12,9 +12,10 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def homepage():
-	"""renders homepage information"""
-
-	return render_template("homepage.html")
+    """renders homepage information"""
+    share = Post.query.filter(Post.post_types == "Share").all()
+    wish = Post.query.filter(Post.post_types == "Wish").all()
+    return render_template("homepage.html", share=share, wish=wish)
 
 @app.route('/form', methods=['GET'])
 def form_holder():
