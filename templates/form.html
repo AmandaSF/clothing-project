@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="register" method="POST">
+<form action="process-form" method="POST">
 
 	<div>
 		<label>Email Address:
@@ -11,15 +11,15 @@
 
 	<div>
 		<label>Is this listing for an item you want, or an item you have to share?
-			<input type="radio" name="post_type" value="wish">I want this item.
-			<input type="radio" name="post_type" value="share">This item is to share.
+			<input type="radio" name="post_type" value="Wish">I want this item.
+			<input type="radio" name="post_type" value="Share">This item is to share.
 		</label>
 	</div>
 
 	<div>
 		<label>Clothing Size:
 			{% for size in sizes %}
-			<input type="radio" name="size" value="{{ size }}">
+			<input type="radio" name="size" value="{{ size.sizes }}">{{ size.sizes}}
 			{% endfor %}
 		</label>
 	</div>
@@ -27,7 +27,7 @@
 	<div>
 		<label>Clothing Style:
 			{% for style in style_code %}
-			<input type="radio" name="style" value="{{ style }}">
+			<input type="radio" name="style" value="{{ style.code_desc }}">{{ style.code_desc }}
 			{% endfor %}
 		</label>
 	</div>
@@ -35,7 +35,7 @@
 	<div>
 		<label>Clothing Type:
 			{% for type in item_type %}
-			<input type="radio" name="type" value="{{ type }}">
+			<input type="radio" name="type" value="{{ type.type_desc }}">{{ type.type_desc }}
 			{% endfor %}
 		</label>
 	</div>
@@ -48,6 +48,9 @@
 
 	<div>
 		<input type="submit">
+	</div>
+
+</form>
 
 
 {% endblock %}

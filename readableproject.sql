@@ -1,68 +1,49 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-CREATE TABLE User(
+CREATE TABLE users(
 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
 email VARCHAR(50) NOT NULL);
-INSERT INTO "User" VALUES(1,'email@mail.com');
-INSERT INTO "User" VALUES(2,'user@mail.com');
-CREATE TABLE Clothing_type(
+INSERT INTO "users" VALUES(1,'email@mail.com');
+INSERT INTO "users" VALUES(2,'user@mail.com');
+CREATE TABLE clothing_types(
 type_id INTEGER PRIMARY KEY AUTOINCREMENT,
 type_desc VARCHAR(20) NOT NULL);
-INSERT INTO "Clothing_type" VALUES(1,'Shirt');
-INSERT INTO "Clothing_type" VALUES(2,'Skirt');
-INSERT INTO "Clothing_type" VALUES(3,'Dress');
-CREATE TABLE Size(
+INSERT INTO "clothing_types" VALUES(1,'Shirt');
+INSERT INTO "clothing_types" VALUES(2,'Skirt');
+INSERT INTO "clothing_types" VALUES(3,'Dress');
+CREATE TABLE sizing(
 sizes INTEGER PRIMARY KEY);
-INSERT INTO "Size" VALUES(1);
-INSERT INTO "Size" VALUES(2);
-INSERT INTO "Size" VALUES(3);
-CREATE TABLE Style_code(
+INSERT INTO "sizing" VALUES(1);
+INSERT INTO "sizing" VALUES(2);
+INSERT INTO "sizing" VALUES(3);
+CREATE TABLE styling(
 code_id VARCHAR(6) PRIMARY KEY,
 code_desc VARCHAR(20) NOT NULL);
-INSERT INTO "Style_code" VALUES('Formal','Formal Attire');
-INSERT INTO "Style_code" VALUES('Casual','Casual Attire');
-INSERT INTO "Style_code" VALUES('BisCas','Business Casual');
-CREATE TABLE Wish(
-wish_id INTEGER PRIMARY KEY AUTOINCREMENT,
- w_size INTEGER(2) NOT NULL
-REFERENCES Size,
-w_style VARCHAR(6) NOT NULL
-REFERENCES Style_code,
- w_item_type VARCHAR(20) NOT NULL,
- w_active BOOLEAN NOT NULL DEFAULT 1,
-w_pic VARCHAR(200),
- user_email VARCHAR(50) NOT NULL
-REFERENCES User);
-INSERT INTO "Wish" VALUES(1,1,'Formal','1',1,NULL,'user@mail.com');
-INSERT INTO "Wish" VALUES(2,1,'BisCas','2',1,NULL,'user@mail.com');
-CREATE TABLE Share(
-
-share_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-
-s_size INTEGER(2) NOT NULL 
-
-REFERENCES Style_code,
-
-s_style VARCHAR(6) NOT NULL
-
-REFERENCES Style_code,
-
-s_item_type VARCHAR(20) NOT NULL
-
-REFERENCES Clothing_type,
-
-s_active BOOLEAN NOT NULL DEFAULT 1,
-
-s_pic VARCHAR(200), 
-
- user_email VARCHAR(50) NOT NULL 
-
- REFERENCES User);
-INSERT INTO "Share" VALUES(1,1,'BisCas','2',1,NULL,'mail@email.com');
-INSERT INTO "Share" VALUES(2,1,'Formal','3',1,NULL,'mail@email.com');
+INSERT INTO "styling" VALUES('Formal','Formal Attire');
+INSERT INTO "styling" VALUES('Casual','Casual Attire');
+INSERT INTO "styling" VALUES('BisCas','Business Casual');
+CREATE TABLE post_types(
+post_type_id VARCHAR(6) PRIMARY KEY);
+INSERT INTO "post_types" VALUES('Wish');
+INSERT INTO "post_types" VALUES('Share');
+CREATE TABLE posting(
+post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+size INTEGER(2) NOT NULL
+REFERENCES sizing,
+style VARCHAR(6) NOT NULL
+REFERENCES styling,
+item_type VARCHAR(20) NOT NULL
+REFERENCES clothing_types,
+active BOOLEAN NOT NULL DEFAULT 1,
+pic VARCHAR(200),
+user_email VARCHAR(50) NOT NULL
+REFERENCES users,
+post_types VARCHAR(6) NOT NULL
+REFERENCES post_type_id);
+INSERT INTO "posting" VALUES(1,1,'Formal','Skirt',1,NULL,'email@mail.com','Wish');
+INSERT INTO "posting" VALUES(2,1,'Formal','Skirt',1,NULL,'user@mail.com','Share');
 DELETE FROM sqlite_sequence;
 INSERT INTO "sqlite_sequence" VALUES('User',2);
 INSERT INTO "sqlite_sequence" VALUES('Clothing_type',3);
-INSERT INTO "sqlite_sequence" VALUES('Wish',2);
-INSERT INTO "sqlite_sequence" VALUES('Share',2);
+INSERT INTO "sqlite_sequence" VALUES('posting',2);
 COMMIT;

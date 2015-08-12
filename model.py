@@ -6,6 +6,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
+	"""Stores user information"""
 
 	__tablename__ = "users"
 
@@ -18,77 +19,97 @@ class User(db.Model):
 		return "<User user_id=%d email=%s>" % (self.user_id, self.email)
 
 
-class Share(db.Model):
+class Post_type(db.Model):
+	"""Determines if a post if a wanted item, or an item to share"""
 
-	__tablename__ = "sharing"
+	__tablename__ = "post_types"
 
-	share_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	s_size = db.Column(db.Integer, db.ForeignKey('Size.sizes'), 
-		nullable=False)
-	s_style = db.Column(db.String(6), db.ForeignKey('Style_code.code_id'), 
-		nullable=False)
-	s_item_type = db.Column(db.String(20), db.ForeignKey(
-		'Clothing_type.type_id'), nullable=False)
-	s_active = db.Column(db.Boolean, unique=False, default=True)
-	user_email = db.Column(db.String(50), db.ForeignKey('users.email'
-		), nullable=False)
-
-	sizes = db.relationship("Size", backref="sharing")
-	style = db.relationship("Style_code", backref="sharing")
-	item_type = db.relationship("Clothing_type", backref="sharing")
-	email = db.relationship("User", backref="sharing")
+	post_type_id = db.Column(db.String(6), primary_key=True)
 
 	def __repr__(self):
-		"""Represent info from Share table"""
+		"""Represent info about Post_type"""
 
-		return "<Share share_id=%d s_item_type=%s user_email=%s>" % (
-			self.share_id, self.s_item_type, self.user_email)
-
-class Wish(db.Model):
-
-	__tablename__ = "wishing"
-
-	wish_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	w_size = db.Column(db.Integer, db.ForeignKey('Size.sizes'), nullable=False)
-	w_style = db.Column(db.String(6), db.ForeignKey('Style_code.code_id'), 
-		nullable=False)
-	w_item_type = db.Column(db.String(20), db.ForeignKey(
-		'Clothing_type.type_id'), nullable=False)
-	w_active = db.Column(db.Boolean, unique=False, default=True)
-	user_email = db.Column(db.String(50), db.ForeignKey('users.email'
-		), nullable=False)
-
-	sizes = db.relationship("Size", backref="wishing")
-	style = db.relationship("Style_code", backref="wishing")
-	item_type = db.relationship("Clothing_type", backref="wishing")
-	email = db.relationship("User", backref="wishing")
-
-	def __repr__(self):
-		"""Represent info from Wish table"""
-
-		return "<Wish wish_id=%d w_item_type=%s user_email=%s>" % (
-			self.wish_id, self.w_item_type, self.user_email)
-
+		return "<Post_type post_type_id=%s>" % (self.post_type_id)
 
 class Size(db.Model):
+	"""Stores sizing iformation for post"""
 
 	__tablename__ = "sizing"
 
 	sizes = db.Column(db.Integer, primary_key=True)
 
+	def __repr__(self):
+		"""Represent info about Size"""
+
+		return "<Size sizes=%d>" % (self.sizes)
+
 class Style_code(db.Model):
+	"""Stores what style a posting is, e.g. Formal/Business Casual/etc"""
 
 	__tablename__ = "styling"
 
 	code_id = db.Column(db.String(6), primary_key=True)
 	code_desc = db.Column(db.String(20), nullable=False)
 
-class Clothing_type(db.Model):
+	def __repr__(self):
+		"""Represent info about styling"""
 
-	__tablename__ = "Clothing_types"
+		return "<Style_code code_id=%s code_desc=%s>" % (self.code_id, 
+			self.code_desc)
+
+class Clothing_type(db.Model):
+	"""Stores item type of clothing, e.g. pants/skirt/shirt/dress"""
+
+	__tablename__ = "clothing_types"
 
 	type_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	type_desc = db.Column(db.String(20), nullable=False)
+
+	def __repr__(self):
+		"""Represent info about clothing_types"""
+
+		return "<Clothing_type type_desc=%s>" % (self.type_desc)
+
+class Post(db.Model):
+	"""Where all of the information of an individual post is kept"""
+
+	__tablename__ = "posting"
+
+	post_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+	size = db.Column(db.Integer, db.ForeignKey("sizing.sizes"))
+	style = db.Column(db.String(6), db.ForeignKey('styling.code_id'), 
+		nullable=False)
+	item_type = db.Column(db.String(20), db.ForeignKey(
+		'clothing_types.type_desc'), nullable=False)
+	active = db.Column(db.Boolean, unique=False, default=True)
+	user_email = db.Column(db.String(50), db.ForeignKey('users.email'
+		), nullable=False)
+	post_types = db.Column(db.String(5), db.ForeignKey(
+		'post_types.post_type_id'), nullable=False)
+	pic = db.Column(db.String(200), nullable=True)
+
+	
+
+	post_sizes = db.relationship("Size", 
+		backref=db.backref("posting", order_by=size))
+	
+	styles = db.relationship("Style_code", 
+		backref=db.backref("posting", order_by=style))
+	
+	item_types = db.relationship("Clothing_type", 
+		backref=db.backref("posting", order_by=item_type))
+	
+	email = db.relationship("User", 
+		backref=db.backref("posting", order_by=user_email))
+	
+	types = db.relationship("Post_type", 
+		backref=db.backref("posting", order_by=post_types))
+
+	def __repr__(self):
+		"""Represent info from posting table"""
+
+		return "<Post post_id=%d item_type=%s user_email=%s>" % (
+			self.post_id, self.item_type, self.user_email)
 
 
 
@@ -105,7 +126,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///project.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///projects.db'
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
