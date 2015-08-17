@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="process-test" method="POST">
+<form action="login" method="POST">
 
 	<div>
 		<label>Username:
@@ -15,7 +15,7 @@
 	</div>
 	<div>
 		<label>Password:
-			<input type="text" name="password">
+			<input type="password" name="password">
 		</label>
 	</div>
 
@@ -24,6 +24,9 @@
     </div>
 
 </form>
+
+    Not yet a member? <a href="/register">Click Here!</a>
+
 
 
 {% endblock %}

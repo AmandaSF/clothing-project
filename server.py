@@ -48,34 +48,65 @@ def process_form():
     return redirect('/')
 
 @app.route('/login', methods=['GET'])
-def test():
-    """test things"""
+def login_form():
+    """Shows login form"""
    
     return render_template('login.html')
 
-@app.route('/process-test', methods=["POST"])
-def process_test():
+@app.route('/login', methods=["POST"])
+def process_login():
 
 
     email = request.form["email"]
+    user_name = request.form['username']
+    password = request.form['password']
 
-    new_user = User(email=email)
+    user = User.query.filter(db.or_(User.email == email, 
+        User.user_name == user_name)).first()
+
+    if not user:
+        flash("Incorrect email or username!")
+        return redirect("/login")
+
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect("/login")
+
+    session["user_id"] = user.user_id
+    flash("Logged in")
+    return redirect("/")
+
+
+@app.route('/register')
+def register_form():
+    """processes registration."""
+
+    return render_template("register.html")
+
+@app.route('/register', methods=['POST'])
+def button():
+    """Registers new users"""
+
+    email = request.form['email']
+    user_name = request.form['username']
+    password = request.form['password']
+
+    new_user = User(email=email, user_name=user_name, password=password)
 
     db.session.add(new_user)
     db.session.commit()
 
-    flash('%s' % email)
+    flash('Welcome %s' % username)
     return redirect('/')
 
-@app.route('/button')
-def button():
+@app.route('/logout')
+def logout():
+    """logout user."""
 
-    size = Size.query.first()
-    thing = size.sizes
-
-    flash("does this even work? %s" % thing)
+    del session['user_id']
+    flash('logged out')
     return redirect('/')
-
+   
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

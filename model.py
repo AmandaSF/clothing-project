@@ -11,7 +11,9 @@ class User(db.Model):
 	__tablename__ = "users"
 
 	user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-	email = db.Column(db.String(50), nullable=False)
+	email = db.Column(db.String(50), nullable=False, unique=True)
+	user_name = db.Column(db.String(20), nullable=False, unique=True)
+	password = db.Column(db.String(50), nullable=False)
 
 	def __repr__(self):
 		"""Represent info about user"""

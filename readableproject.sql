@@ -2,9 +2,12 @@ PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE users(
 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-email VARCHAR(50) NOT NULL);
-INSERT INTO "users" VALUES(1,'email@mail.com');
-INSERT INTO "users" VALUES(2,'user@mail.com');
+email VARCHAR(50) NOT NULL,
+user_name VARCHAR(20) NOT NULL,
+password VARCHAR(50) NOT NULL);
+INSERT INTO "users" VALUES(1,'email@mail.com', 'email', 'abc');
+INSERT INTO "users" VALUES(2,'user@mail.com', 'user', '123');
+INSERT INTO "users" VALUES(3,'amandafuhrmann@gmail.com', 'amanda', 'fuhrmann');
 CREATE TABLE clothing_types(
 type_id INTEGER PRIMARY KEY AUTOINCREMENT,
 type_desc VARCHAR(20) NOT NULL);
@@ -42,8 +45,16 @@ post_types VARCHAR(6) NOT NULL
 REFERENCES post_type_id);
 INSERT INTO "posting" VALUES(1,1,'Formal','Skirt',1,NULL,'email@mail.com','Wish');
 INSERT INTO "posting" VALUES(2,1,'Formal','Skirt',1,NULL,'user@mail.com','Share');
+INSERT INTO "posting" VALUES(3,2,'Formal Attire','Shirt',1,NULL,'amandafuhrmann@gmail.com','Wish');
+INSERT INTO "posting" VALUES(4,3,'Casual Attire','Shirt',1,'','amandafuhrmann@gmail.com','Share');
+INSERT INTO "posting" VALUES(5,2,'Formal Attire','Shirt',1,'','amandafuhrmann@gmail.com','Wish');
+INSERT INTO "posting" VALUES(6,3,'Business Casual','Shirt',1,'','user@mail.com','Share');
+INSERT INTO "posting" VALUES(7,3,'Casual Attire','Shirt',1,'','amandafuhrmann@gmail.com','Share');
+INSERT INTO "posting" VALUES(8,2,'Casual Attire','Skirt',1,'','amandafuhrmann@gmail.com','Wish');
+INSERT INTO "posting" VALUES(9,1,'Formal Attire','Dress',1,'','amandafuhrmann@gmail.com','Wish');
 DELETE FROM sqlite_sequence;
 INSERT INTO "sqlite_sequence" VALUES('User',2);
 INSERT INTO "sqlite_sequence" VALUES('Clothing_type',3);
-INSERT INTO "sqlite_sequence" VALUES('posting',2);
+INSERT INTO "sqlite_sequence" VALUES('posting',9);
+INSERT INTO "sqlite_sequence" VALUES('users',3);
 COMMIT;
