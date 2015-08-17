@@ -3,7 +3,10 @@
 
 <h2>Best, most precious, homepage</h2>
 
-<div class="sharing">
+
+<button>Toggle</button>
+
+<div style="display: none" class="display sharing">
 	Here are items that people sharing:
 	<ul>
 	{% for item in share %}
@@ -14,7 +17,7 @@
 	</ul>
 </div>
 
-<div>
+<div class="display wanting">
 	Here are items that people are looking for:
 	<ul>
 	{% for item in wish %}
@@ -25,4 +28,15 @@
 	</ul>
 </div>
 
+
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../static/toggler.js"></script>
 {% endblock %}
+
+
+
+<!-- 
+<button>Toggle</button>
+<p>Hello</p>
+<p style="display: none">Good Bye</p> -->

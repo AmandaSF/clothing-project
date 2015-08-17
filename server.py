@@ -47,11 +47,11 @@ def process_form():
     flash("Your posting has been added!")
     return redirect('/')
 
-@app.route('/test', methods=['GET'])
+@app.route('/login', methods=['GET'])
 def test():
     """test things"""
    
-    return render_template('test.html')
+    return render_template('login.html')
 
 @app.route('/process-test', methods=["POST"])
 def process_test():
