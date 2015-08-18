@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="process-form" method="POST">
+<form action="new-posting" method="POST">
 
 	<div>
 		<label>Email Address:
-			<input type="email" name="email">
+			<input type="email" name="email" required>
 		</label>
 	</div>
 
 	<div>
 		<label>Is this listing for an item you want, or an item you have to share?
-			<input type="radio" name="post_type" value="Wish">I want this item.
-			<input type="radio" name="post_type" value="Share">This item is to share.
+			<input type="radio" name="post_type" value="Wish" required>I want this item.
+			<input type="radio" name="post_type" value="Share" required>This item is to share.
 		</label>
 	</div>
 
 	<div>
 		<label>Clothing Size:
 			{% for size in sizes %}
-			<input type="radio" name="size" value="{{ size.sizes }}">{{ size.sizes}}
+			<input type="radio" name="size" value="{{ size.sizes }}" required>{{ size.sizes}}
 			{% endfor %}
 		</label>
 	</div>
@@ -27,7 +27,7 @@
 	<div>
 		<label>Clothing Style:
 			{% for style in style_code %}
-			<input type="radio" name="style" value="{{ style.code_desc }}">{{ style.code_desc }}
+			<input type="radio" name="style" value="{{ style.code_desc }}" required>{{ style.code_desc }}
 			{% endfor %}
 		</label>
 	</div>
@@ -35,7 +35,7 @@
 	<div>
 		<label>Clothing Type:
 			{% for type in item_type %}
-			<input type="radio" name="type" value="{{ type.type_desc }}">{{ type.type_desc }}
+			<input type="radio" name="type" value="{{ type.type_desc }}" required>{{ type.type_desc }}
 			{% endfor %}
 		</label>
 	</div>

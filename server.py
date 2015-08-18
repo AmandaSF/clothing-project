@@ -2,32 +2,46 @@ from jinja2 import StrictUndefined
 #to make sure that errors cannot fail silently
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from model import connect_to_db, db, init_app, Clothing_type, Style_code, User, Post, Size
+from model import connect_to_db, db, init_app, login_required
+from model import Clothing_type, Style_code, User, Post, Size
 
 app = Flask(__name__)
 
 app.secret_key = "ABC"
 
-app.jinja_env.undefined = StrictUndefined
+app.jinja_env.undefined = StrictUndefined 
 
 @app.route('/')
 def homepage():
     """renders homepage information"""
-    share = Post.query.filter(Post.post_types == "Share").all()
-    wish = Post.query.filter(Post.post_types == "Wish").all()
-    return render_template("homepage.html", share=share, wish=wish)
+    
+    if session.get('user_id') is not None:
+        share = Post.query.filter(Post.post_types == "Share").all()
+        wish = Post.query.filter(Post.post_types == "Wish").all()
+        return render_template("homepage.html", share=share, wish=wish)
 
-@app.route('/form', methods=['GET'])
+    else:
+        share = db.session.query(Post, User).join(User).filter(
+            Post.post_types == "Share").all()
+        wish = db.session.query(Post, User).join(User).filter(
+            Post.post_types == "Wish").all()
+        return render_template("unlogged_homepage.html", share=share, wish=wish)
+
+
+@app.route('/new-posting', methods=['GET'])
+@login_required
 def form_holder():
     """renders clothing form"""
 
     sizes = Size.query.all()
     style_code = Style_code.query.all()
     item_type = Clothing_type.query.all()
-    return render_template('form.html', sizes=sizes, style_code=style_code,
+
+    return render_template('new_posting.html', sizes=sizes, style_code=style_code,
         item_type=item_type)
 
-@app.route('/process-form', methods=['POST'])
+@app.route('/new-posting', methods=['POST'])
+@login_required
 def process_form():
     """Adds form results to database table Share or Wish"""
 
@@ -76,6 +90,13 @@ def process_login():
     flash("Logged in")
     return redirect("/")
 
+@app.route('/user-page')
+@login_required
+def user_page():
+    """displays relevent user information"""
+
+
+    return render_template('user_page.html')
 
 @app.route('/register')
 def register_form():
@@ -107,6 +128,10 @@ def logout():
     flash('logged out')
     return redirect('/')
    
+@app.route('/test')
+def test():
+    """test function"""
+    pass
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

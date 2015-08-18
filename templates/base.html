@@ -10,7 +10,7 @@
 
 <body>
 
-	
+
 {% if "user_id" in session %}
     <a href="/logout">Logout</a>
 {% else %}
@@ -23,7 +23,7 @@
         {% endfor %}
     </ul>
 
-    <a href="/form">Post New List Items Here</a>
+    <a href="/new-posting">Post New List Items Here</a>
 
 {% block content %} put your content here {% endblock %}
 

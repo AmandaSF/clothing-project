@@ -1,6 +1,8 @@
 """Table models and helper function for Project database"""
 
 from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
+from flask import session
 
 db = SQLAlchemy()
 
@@ -116,6 +118,16 @@ class Post(db.Model):
 
 
 #Helper functions 
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get('user_id') is not None:
+            return f(*args, **kwargs)
+        else:
+            flash('You must be logged in to see this page.')
+            return redirect('/login')
+    return decorated_function      
 
 def init_app():
 
