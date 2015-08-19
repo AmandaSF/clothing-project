@@ -95,8 +95,17 @@ def process_login():
 def user_page():
     """displays relevent user information"""
 
+    current_user = session.get("user_id")
+    user = User.query.filter(User.user_id == current_user).first()
+    post = Post.query.filter(Post.user_email == user.email).all()
 
-    return render_template('user_page.html')
+
+    return render_template('user_page.html', user=user, post=post)
+
+
+
+
+
 
 @app.route('/register')
 def register_form():
