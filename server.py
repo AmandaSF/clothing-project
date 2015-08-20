@@ -71,12 +71,11 @@ def login_form():
 def process_login():
 
 
-    email = request.form["email"]
-    user_name = request.form['username']
+    name = request.form["name"]
     password = request.form['password']
 
-    user = User.query.filter(db.or_(User.email == email, 
-        User.user_name == user_name)).first()
+    user = User.query.filter(db.or_(User.email == name, 
+        User.user_name == name)).first()
 
     if not user:
         flash("Incorrect email or username!")
@@ -107,14 +106,14 @@ def user_page():
 
 
 
-@app.route('/register')
+@app.route('/register-form', methods=['GET'])
 def register_form():
     """processes registration."""
 
     return render_template("register.html")
 
 @app.route('/register', methods=['POST'])
-def button():
+def process_registration():
     """Registers new users"""
 
     email = request.form['email']
@@ -126,7 +125,10 @@ def button():
     db.session.add(new_user)
     db.session.commit()
 
-    flash('Welcome %s' % username)
+    user = User.query.filter(User.email == email).first()
+    session["user_id"] = user.user_id
+
+    flash('Welcome %s' % user_name)
     return redirect('/')
 
 @app.route('/logout')

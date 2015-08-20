@@ -16,6 +16,7 @@
 {% else %}
     <a href="/login">Login</a>
 {% endif %}
+<a href="/">Go Home</a>
 
 	<ul>
         {% for message in get_flashed_messages() %}
@@ -23,7 +24,6 @@
         {% endfor %}
     </ul>
 
-    <a href="/new-posting">Post New List Items Here</a>
 
 {% block content %} put your content here {% endblock %}
 
