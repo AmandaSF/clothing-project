@@ -103,9 +103,6 @@ def user_page():
 
 
 
-
-
-
 @app.route('/register-form', methods=['GET'])
 def register_form():
     """processes registration."""
@@ -139,10 +136,89 @@ def logout():
     flash('logged out')
     return redirect('/')
    
+
+@app.route('/update-user')
+def update_user_form():
+    """Updates User Information"""
+
+    return render_template('user_update.html')
+
+
+@app.route('/update-user', methods=['POST'])
+def process_update_user():
+    """Updates User Information to database."""
+
+    user_id = session.get('user_id')
+    user = User.query.filter(User.user_id == user_id).first()
+
+    username = request.form['username']
+    email = request.form['email']
+    password = request.form['password']
+
+
+    if len(username) > 0:
+        user.user_name = username
+        db.session.commit()
+        flash("Your Username is now %s" % username)
+    if len(email) > 0:
+        user.email = email
+        db.session.commit()
+        flash("Your Email is now %s" % email)
+    if len(password) > 0:
+        user.password = password
+        db.session.commit()
+        flash("Your password has been updated.")
+    else:
+    	pass
+
+    return redirect('/')
+
+@app.route('/post-update')
+def select_post_update():
+	"""renders post selection form"""
+
+	print "look at meeeeee! Right here!"
+	current_user = session.get("user_id")
+	user = User.query.filter(User.user_id == current_user).first()
+	post = Post.query.filter(Post.user_email == user.email).all()
+	print post
+
+	return render_template('select_post.html', post=post)
+
+@app.route('/post-update/<int:post_id>')
+def update_post(post_id):
+	"""allows postings to be updated"""
+
+	post = Post.query.filter(Post.post_id == post_id).first()
+
+	return render_template('post_update.html', post=post)
+
+
 @app.route('/test')
 def test():
     """test function"""
-    pass
+    
+    user_id = session.get('user_id')
+    user = User.query.filter(User.user_id == user_id).first()
+
+    post = Post.query.filter(Post.user_email == user.email).all()
+
+
+    return render_template('test_function.html', post=post)
+
+@app.route('/test', methods=['POST'])
+def update():
+    """updates user information"""
+
+    photo = request.form['photo']
+    post = Post.query.filter(Post.post_id == 1).first()
+
+    post.pic = photo
+
+    db.session.commit()
+
+
+    return redirect('/')
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+	This form allows you to make some changes to your postings. If further updates are required, simply delete this posting <a href="/delete-posting">here</a> and start over.
+</div>
+<div>
+	For the {{ post.post_types }} for a {{ post.style }} {{ post.item_type }} available in size {{ post.size }}.
+</div>
+
+<form action='post-update' method="POST">
+
+	<div>
+		<label>Is this listing for an item you want, or an item you have to share?
+			<input type="radio" name="post_type" value="Wish" required>I want this item.
+			<input type="radio" name="post_type" value="Share" required>This item is to share.
+		</label>
+	</div>
+
+	<div>
+		<label>Optional Photo Url:
+			<input type="text" name="photo_url">
+		</label>
+	</div>
+
+	<div>
+		<input type="submit">
+	</div>
+
+</form>
+
+
+
+
+{% endblock %}

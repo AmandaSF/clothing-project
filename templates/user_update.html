@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="update-user" method="POST">
+
+
+	<div>
+		<label>Change Username:
+			<input type="text" name="username">
+		</label>
+	</div>
+	<div>
+		<label>Change Email Address:
+			<input type="email" name="email">
+		</label>
+	</div>
+	<div>
+		<label>Change Password:
+			<input type="password" name="password">
+		</label>
+	</div>
+
+<div>
+	<input type="submit">
+</div>
+
+
+
+{% endblock %}

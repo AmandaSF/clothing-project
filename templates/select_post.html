@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+	<div>
+		<ul>
+		<label>Click On Post To Update
+			{% for item in post %}
+			<li>
+			<a href="/post-update/{{ item.post_id }}">Your {{ item.post_types }}ed for a {{ item.style }} {{ item.item_type }} available in size {{ item.size }}. 
+			</li>
+			{% endfor %}
+		</label>
+		</ul>
+	</div>
+	
+
+{% endblock %}
+
+
