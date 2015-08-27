@@ -2,6 +2,9 @@
 <html>
 <head>
 <link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/bootstrape-3.3.5-dist/css/bootstrap.css">
+<link rel="stylesheet" href="/static/font-awesome-4.4.0/css/font-awesome.min.css">
+<link href='http://fonts.googleapis.com/css?family=Raleway+Dots|Source+Sans+Pro|Dosis|Gudea|Kameron|Fenix' rel='stylesheet' type='text/css'>
 
 	<title>
 	Stuff and things
@@ -9,14 +12,32 @@
 </head>
 
 <body>
-
-
-{% if "user_id" in session %}
-    <a href="/logout">Logout</a>
-{% else %}
-    <a href="/login">Login</a>
-{% endif %}
-<a href="/">Go Home</a>
+    <header>
+     <div class="dropdown">
+            <i class="fa fa-bars"></i>
+            <div class="menu">
+                <div>
+                    <a href="/user-page">Update For Self currently User Page</a>
+                </div>
+                <div>
+                    <a href="/new-posting">Post New Items Here</a>
+                </div>
+                <div>
+                    <a href="/fqa">Frequently Asked Questions</a>
+                </div>
+            </div>   
+        </div>
+        <div class="login">
+            {% if "user_id" in session %}
+            <a href="/logout">Logout</a>
+            {% else %}
+            <a href="/login">Login</a>
+            {% endif %}
+        </div>
+        <div class="title">
+        <a href="/">CloudCloset</a>
+        </div>
+       
 
 	<ul>
         {% for message in get_flashed_messages() %}
@@ -26,6 +47,11 @@
 
 
 {% block content %} put your content here {% endblock %}
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../static/toggler.js"></script>
+
+
 
 </body>
 </html>

@@ -9,22 +9,24 @@ app = Flask(__name__)
 
 app.secret_key = "ABC"
 
-app.jinja_env.undefined = StrictUndefined 
+app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def homepage():
     """renders homepage information"""
     
     if session.get('user_id') is not None:
-        share = Post.query.filter(Post.post_types == "Share").all()
-        wish = Post.query.filter(Post.post_types == "Wish").all()
+        share = Post.query.filter(db.and_(Post.post_types == "Share", 
+        	Post.active == True)).all()
+        wish = Post.query.filter(db.and_(Post.post_types == "Wish",
+        	Post.active == True)).all()
         return render_template("homepage.html", share=share, wish=wish)
 
     else:
-        share = db.session.query(Post, User).join(User).filter(
-            Post.post_types == "Share").all()
-        wish = db.session.query(Post, User).join(User).filter(
-            Post.post_types == "Wish").all()
+        share = db.session.query(Post, User).join(User).filter(db.and_(
+            Post.post_types == "Share", Post.active == True)).all()
+        wish = db.session.query(Post, User).join(User).filter(db.and_(
+            Post.post_types == "Wish", Post.active == True)).all()
         return render_template("unlogged_homepage.html", share=share, wish=wish)
 
 
@@ -96,7 +98,8 @@ def user_page():
 
     current_user = session.get("user_id")
     user = User.query.filter(User.user_id == current_user).first()
-    post = Post.query.filter(Post.user_email == user.email).all()
+    post = Post.query.filter(db.and_(Post.user_email == user.email,
+    	Post.active == True)).all()
 
 
     return render_template('user_page.html', user=user, post=post)
@@ -168,8 +171,6 @@ def process_update_user():
         user.password = password
         db.session.commit()
         flash("Your password has been updated.")
-    else:
-    	pass
 
     return redirect('/')
 
@@ -177,11 +178,11 @@ def process_update_user():
 def select_post_update():
 	"""renders post selection form"""
 
-	print "look at meeeeee! Right here!"
 	current_user = session.get("user_id")
 	user = User.query.filter(User.user_id == current_user).first()
-	post = Post.query.filter(Post.user_email == user.email).all()
-	print post
+	post = Post.query.filter(db.and_(Post.user_email == user.email,
+		Post.active == True)).all()
+	
 
 	return render_template('select_post.html', post=post)
 
@@ -193,6 +194,44 @@ def update_post(post_id):
 
 	return render_template('post_update.html', post=post)
 
+@app.route('/post-update/update/<int:post_id>', methods=['POST'])
+def proccess_update_post(post_id):
+	"""proccess the update of a user's post"""
+
+	post = Post.query.filter(Post.post_id == post_id).first()
+	photo = request.form['photo_url']
+
+	if len(photo) > 0:
+		post.pic = photo
+		db.session.commit()
+		flash("Your photo has been updated.")
+	
+	return redirect('/user-page')
+
+@app.route('/delete-posting')
+def delete_posting():
+	"""renders the template for deativating postings"""
+
+	current_user = session.get("user_id")
+	user = User.query.filter(User.user_id == current_user).first()
+	post = Post.query.filter(db.and_(Post.user_email == user.email,
+		Post.active == True)).all()
+
+	return render_template('delete_posting.html', post=post)
+
+@app.route('/delete-posting', methods=['POST'])
+def proccess_delete_posting():
+	"""Assigns an inactive value to postings."""
+
+	selected_posts = request.form.getlist('posting')
+
+	for item in selected_posts:
+	  	post = Post.query.filter(Post.post_id == item).first()
+		post.active = False
+		db.session.commit()
+
+	flash("The selected posts have been deleted.")
+	return redirect('/user-page')
 
 @app.route('/test')
 def test():
@@ -224,7 +263,7 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension. Also, don't forget to 
     #change it to false before releasing it onto the internet!
-    app.debug = True
+    app.debug = False
 
     connect_to_db(app)
 

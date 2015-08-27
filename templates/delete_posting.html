@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<form action="delete-posting" method="POST">
+	<ul>
+	{% for item in post %}
+	<li>
+		<input type="checkbox" name="posting" value="{{ item.post_id }}"> For the {{ item.post_types }} for a {{ item.style }} {{ item.item_type }} available in size {{ item.size }}.
+	</li>
+	{% endfor %}
+	</ul>
+
+	<div>
+		<input type="submit">
+	</div>
+
+</form>
+
+
+
+
+
+
+{% endblock %}
