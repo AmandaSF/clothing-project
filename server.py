@@ -6,28 +6,22 @@ from model import connect_to_db, db, init_app, login_required
 from model import Clothing_type, Style_code, User, Post, Size
 
 app = Flask(__name__)
-
 app.secret_key = "ABC"
-
 app.jinja_env.undefined = StrictUndefined
+
+
+
 
 @app.route('/')
 def homepage():
     """renders homepage information"""
-    
-    if session.get('user_id') is not None:
-        share = Post.query.filter(db.and_(Post.post_types == "Share", 
-        	Post.active == True)).all()
-        wish = Post.query.filter(db.and_(Post.post_types == "Wish",
-        	Post.active == True)).all()
-        return render_template("homepage.html", share=share, wish=wish)
+	
+    share = db.session.query(Post, User).join(User).filter(db.and_(
+    	Post.post_types == "Share", Post.active == True)).all()
+    wish = db.session.query(Post, User).join(User).filter(db.and_(
+    	Post.post_types == "Wish", Post.active == True)).all()
 
-    else:
-        share = db.session.query(Post, User).join(User).filter(db.and_(
-            Post.post_types == "Share", Post.active == True)).all()
-        wish = db.session.query(Post, User).join(User).filter(db.and_(
-            Post.post_types == "Wish", Post.active == True)).all()
-        return render_template("unlogged_homepage.html", share=share, wish=wish)
+    return render_template("homepage.html", share=share, wish=wish)
 
 
 @app.route('/new-posting', methods=['GET'])
@@ -47,7 +41,12 @@ def form_holder():
 def process_form():
     """Adds form results to database table Share or Wish"""
 
-    user_email = request.form['email']
+    current_user = session.get("user_id")
+    print "look at this"
+    user = User.query.filter(User.user_id == current_user).first()
+    print "right here"
+    user_email = user.email
+    print user_email
     post_type = request.form['post_type']
     size = request.form['size']
     style = request.form['style']
@@ -86,6 +85,7 @@ def process_login():
     if user.password != password:
         flash("Incorrect password")
         return redirect("/login")
+
 
     session["user_id"] = user.user_id
     flash("Logged in")
@@ -126,7 +126,7 @@ def process_registration():
     db.session.commit()
 
     user = User.query.filter(User.email == email).first()
-    session["user_id"] = user.user_id
+    session["user_id"] = user.user_name
 
     flash('Welcome %s' % user_name)
     return redirect('/')
@@ -237,27 +237,11 @@ def proccess_delete_posting():
 def test():
     """test function"""
     
-    user_id = session.get('user_id')
-    user = User.query.filter(User.user_id == user_id).first()
-
-    post = Post.query.filter(Post.user_email == user.email).all()
+   
+    return render_template('test_function.html')
 
 
-    return render_template('test_function.html', post=post)
 
-@app.route('/test', methods=['POST'])
-def update():
-    """updates user information"""
-
-    photo = request.form['photo']
-    post = Post.query.filter(Post.post_id == 1).first()
-
-    post.pic = photo
-
-    db.session.commit()
-
-
-    return redirect('/')
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

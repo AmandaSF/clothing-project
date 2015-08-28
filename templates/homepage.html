@@ -2,16 +2,19 @@
 {% block content %}
 
 
-
 <button class="items_toggle">See What Users Are Sharing</button>
 
 <div style="display: none" class="display sharing">
 	{% for item in share %}
 	<div class="item">
 	<span class="item_text">
-	There is a {{ item.style }} {{ item.item_type }} available in size {{ item.size }}. If this is an item you'd like, the contact info is as follows; {{ item.user_email }}
+		{% if "user_id" in session %}
+			{{ item.User.user_name }} shared a {{ item.Post.style }} {{ item.Post.item_type }} available in size {{ item.Post.size }}. If this is an item you'd like, the contact info is as follows; {{ item.Post.user_email }}
+		{% else %}
+			There is a {{ item.Post.style }} {{ item.Post.item_type }} available in size {{ item.Post.size }}. If this is an item you'd like, please login to contact {{ item.User.user_name }}.
+		{% endif %}
 	</span>
-	<img src="{{ item.pic }}">
+	<img src="{{ item.Post.pic }}">
 	</div>
 	{% endfor %}
 </div>
@@ -19,9 +22,14 @@
 <div class="display wanting">
 	{% for item in wish %}
 	<div class="item">
-	<span class="item_text">A user needs a {{ item.style }} {{ item.item_type }} in size {{ item.size}}. If you have this item, please contact the user at {{ item.user_email }}
+	<span class="item_text">
+	{% if "user_id" in session %}
+		{{ item.User.user_name }} needs a {{ item.Post.style }} {{ item.Post.item_type }} in size {{ item.Post.size}}. If you have this item, please contact the user at {{ item.Post.user_email }}
+	{% else %}
+		A user needs a {{ item.Post.style }} {{ item.Post.item_type }} in size {{ item.Post.size}}. If you have this item, please login to contact {{ item.User.user_name }}.
+	{% endif %}
 	</span>
-	 <img src="{{ item.pic }}">
+	 <img src="{{ item.Post.pic }}">
 	</div>
 	{% endfor %}
 </div>
