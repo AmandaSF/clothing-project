@@ -88,7 +88,6 @@ def process_login():
 
 
     session["user_id"] = user.user_id
-    flash("Logged in")
     return redirect("/")
 
 @app.route('/user-page')
@@ -98,11 +97,15 @@ def user_page():
 
     current_user = session.get("user_id")
     user = User.query.filter(User.user_id == current_user).first()
-    post = Post.query.filter(db.and_(Post.user_email == user.email,
-    	Post.active == True)).all()
+
+    share = Post.query.filter(db.and_(Post.user_email == user.email,
+    	Post.active == True, Post.post_types == "Share")).all()
+    wish = Post.query.filter(db.and_(Post.user_email == user.email,
+    	Post.active == True, Post.post_types == "Wish")).all()
 
 
-    return render_template('user_page.html', user=user, post=post)
+    return render_template('user_page.html', user=user, 
+    	share=share, wish=wish)
 
 
 
@@ -136,7 +139,6 @@ def logout():
     """logout user."""
 
     del session['user_id']
-    flash('logged out')
     return redirect('/')
    
 
@@ -232,6 +234,12 @@ def proccess_delete_posting():
 
 	flash("The selected posts have been deleted.")
 	return redirect('/user-page')
+
+@app.route('/faq')
+def faq():
+	"""renders faq page"""
+
+	return render_template('faq.html')
 
 @app.route('/test')
 def test():

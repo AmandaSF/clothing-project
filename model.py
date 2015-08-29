@@ -2,7 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
-from flask import session
+from flask import session, flash, redirect
 
 db = SQLAlchemy()
 

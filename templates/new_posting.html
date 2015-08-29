@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="new-posting" method="POST">
+<form action="new-posting" method="POST" class="form_post">
 
-	<div>
+	<div class="form_input">
 		<label>Is this listing for an item you want, or an item you have to share?
 			<input type="radio" name="post_type" value="Wish" required>I want this item.
 			<input type="radio" name="post_type" value="Share" required>This item is to share.
 		</label>
 	</div>
 
-	<div>
+	<div class="form_input">
 		<label>Clothing Size:
 			{% for size in sizes %}
 			<input type="radio" name="size" value="{{ size.sizes }}" required>{{ size.sizes}}
@@ -18,7 +18,7 @@
 		</label>
 	</div>
 
-	<div>
+	<div class="form_input">
 		<label>Clothing Style:
 			{% for style in style_code %}
 			<input type="radio" name="style" value="{{ style.code_desc }}" required>{{ style.code_desc }}
@@ -26,7 +26,7 @@
 		</label>
 	</div>
 
-	<div>
+	<div class="form_input">
 		<label>Clothing Type:
 			{% for type in item_type %}
 			<input type="radio" name="type" value="{{ type.type_desc }}" required>{{ type.type_desc }}
@@ -34,13 +34,13 @@
 		</label>
 	</div>
 
-	<div>
+	<div class="form_input">
 		<label>Optional Photo Url:
 			<input type="text" name="photo_url">
 		</label>
 	</div>
 
-	<div>
+	<div class="form_submit">
 		<input type="submit">
 	</div>
 

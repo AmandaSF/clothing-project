@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
+<div class="toggle_button">
 <button class="items_toggle">See What Users Are Sharing</button>
+</div>
 
 <div style="display: none" class="display sharing">
 	{% for item in share %}
@@ -14,7 +15,7 @@
 			There is a {{ item.Post.style }} {{ item.Post.item_type }} available in size {{ item.Post.size }}. If this is an item you'd like, please login to contact {{ item.User.user_name }}.
 		{% endif %}
 	</span>
-	<img src="{{ item.Post.pic }}">
+	<img src="{{ item.Post.pic }}" class="photo">
 	</div>
 	{% endfor %}
 </div>
@@ -29,7 +30,9 @@
 		A user needs a {{ item.Post.style }} {{ item.Post.item_type }} in size {{ item.Post.size}}. If you have this item, please login to contact {{ item.User.user_name }}.
 	{% endif %}
 	</span>
-	 <img src="{{ item.Post.pic }}">
+	<div>
+		<img src="{{ item.Post.pic }}" class="photo">
+	</div>
 	</div>
 	{% endfor %}
 </div>

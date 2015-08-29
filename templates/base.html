@@ -23,7 +23,7 @@
                     <a href="/new-posting">Post New Items Here</a>
                 </div>
                 <div>
-                    <a href="/fqa">Frequently Asked Questions</a>
+                    <a href="/faq">Frequently Asked Questions</a>
                 </div>
             </div>   
         </div>
@@ -39,11 +39,11 @@
         </div>
        
 
-	<ul>
+        <div class="flash_message">
         {% for message in get_flashed_messages() %}
-            <li>{{ message }}</li>
+            {{ message }}
         {% endfor %}
-    </ul>
+        </div>
 
 
 {% block content %} put your content here {% endblock %}

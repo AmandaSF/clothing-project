@@ -1,22 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
-
-
-{{ user.user_name }}
-
-You have these posts:
-<div>
-	<ul>
-	{% for item in post %}
-	<li>
-	You {{ item.post_types }}ed for a {{ item.style }} {{ item.item_type }} available in size {{ item.size }}.
-	</li>
-	{% endfor %}
-	</ul>
+<div class="toggle_button">
+<button class="user_toggle">Click for Shared Items</button>
 </div>
-<a href="/new-posting">Post New List Items Here</a>
+
+<div class="user_greeting">
+Welcome {{ user.user_name }}
+</div>
+
+
+<div style="display: none" class="display sharing">
+	<div class="item">
+	<span class="item_text">
+	{% for item in share %}
+		A {{ item.style }} {{ item.item_type }} available in size {{ item.size }}
+	</span>
+		<img src="{{ item.pic }}" class="photo">
+	</div>
+	{% endfor %}
+</div>
+
+<div class="display wanting">
+	{% for item in wish %}
+	<div class="item">
+	<span class="item_text">
+		A {{ item.style }} {{ item.item_type }} available in size {{ item.size }}.
+	</span> 
+	<img src="{{ item.pic }}" class="photo">
+	</div>
+	{% endfor %}
+</div>
+
+
+
+
 <a href="/update-user">Update Your Information Here</a>
 <a href="/post-update">Update Photo Here</a>
 <a href="/delete-posting">Delete Posts Here</a>
