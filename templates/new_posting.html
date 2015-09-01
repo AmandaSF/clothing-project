@@ -5,38 +5,47 @@
 
 	<div class="form_input">
 		<label>Is this listing for an item you want, or an item you have to share?
-			<input type="radio" name="post_type" value="Wish" required>I want this item.
-			<input type="radio" name="post_type" value="Share" required>This item is to share.
+		<select name="post_type">
+			<option value="Wish" required>I want this item.</option>
+			<option value="Share" required>I am sharing this item.</option>
+		</select>
 		</label>
 	</div>
 
+
 	<div class="form_input">
 		<label>Clothing Size:
+		<select name="size">
 			{% for size in sizes %}
-			<input type="radio" name="size" value="{{ size.sizes }}" required>{{ size.sizes}}
+			<option value="{{ size.sizes }}" required>{{ size.sizes}}</option>
 			{% endfor %}
+		</select>
 		</label>
 	</div>
 
 	<div class="form_input">
 		<label>Clothing Style:
+		<select name="style">
 			{% for style in style_code %}
-			<input type="radio" name="style" value="{{ style.code_desc }}" required>{{ style.code_desc }}
+			<option value="{{ style.code_desc }}" required>{{ style.code_desc }}</option>
 			{% endfor %}
+		</select>
 		</label>
 	</div>
 
 	<div class="form_input">
 		<label>Clothing Type:
+		<select name="type">
 			{% for type in item_type %}
-			<input type="radio" name="type" value="{{ type.type_desc }}" required>{{ type.type_desc }}
+			<option value="{{ type.type_desc }}" requird>{{ type.type_desc }}</option>
 			{% endfor %}
+		</select>
 		</label>
 	</div>
 
 	<div class="form_input">
 		<label>Optional Photo Url:
-			<input type="text" name="photo_url">
+			<input type="text" name="photo_url" >
 		</label>
 	</div>
 

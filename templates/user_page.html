@@ -11,12 +11,14 @@ Welcome {{ user.user_name }}
 
 
 <div style="display: none" class="display sharing">
-	<div class="item">
-	<span class="item_text">
 	{% for item in share %}
-		A {{ item.style }} {{ item.item_type }} available in size {{ item.size }}
-	</span>
-		<img src="{{ item.pic }}" class="photo">
+	<div class="item">
+		<span class="item_text">
+	A {{ item.style }} {{ item.item_type }} available in size {{ item.size }}
+		</span>
+		<div>
+			<img src="{{ item.pic }}" class="photo">
+		</div>
 	</div>
 	{% endfor %}
 </div>
@@ -24,10 +26,12 @@ Welcome {{ user.user_name }}
 <div class="display wanting">
 	{% for item in wish %}
 	<div class="item">
-	<span class="item_text">
+		<span class="item_text">
 		A {{ item.style }} {{ item.item_type }} available in size {{ item.size }}.
-	</span> 
-	<img src="{{ item.pic }}" class="photo">
+		</span> 
+		<div>
+			<img src="{{ item.pic }}" class="photo">
+		</div>
 	</div>
 	{% endfor %}
 </div>

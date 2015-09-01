@@ -15,7 +15,9 @@
 			There is a {{ item.Post.style }} {{ item.Post.item_type }} available in size {{ item.Post.size }}. If this is an item you'd like, please login to contact {{ item.User.user_name }}.
 		{% endif %}
 	</span>
+	<div>
 	<img src="{{ item.Post.pic }}" class="photo">
+	</div>
 	</div>
 	{% endfor %}
 </div>
