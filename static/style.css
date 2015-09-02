@@ -207,10 +207,12 @@ img.photo {
 }
 
 .form {
-	width: 25%;
+	width: 33%;
 	padding-top: 25px;
 	text-align: right;
 }
+
+
 
 .form_input {
 	margin: auto;
@@ -231,7 +233,7 @@ img.photo {
 }
 
 .register_text > a {
-	color: #41caff;
+	color: ##2090c4;
 }
 
 
@@ -243,8 +245,5 @@ img.photo {
 }
 
 
-imagesLoaded( '.display', function() {
-	
-});
 
 
