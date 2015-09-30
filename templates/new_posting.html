@@ -5,9 +5,9 @@
 
 	<div class="form_input">
 		<label>Is this listing for an item you want, or an item you have to share?
-		<select name="post_type">
-			<option value="Wish" required>I want this item.</option>
-			<option value="Share" required>I am sharing this item.</option>
+		<select name="post_type" class="form_dropdown">
+			<option value="Wish" required class="form_option">I want this item.</option>
+			<option value="Share" required class="form_option">I am sharing this item.</option>
 		</select>
 		</label>
 	</div>
@@ -15,9 +15,9 @@
 
 	<div class="form_input">
 		<label>Clothing Size:
-		<select name="size">
+		<select name="size" class="form_dropdown">
 			{% for size in sizes %}
-			<option value="{{ size.sizes }}" required>{{ size.sizes}}</option>
+			<option value="{{ size.sizes }}" required class="form_option">{{ size.sizes}}</option>
 			{% endfor %}
 		</select>
 		</label>
@@ -25,9 +25,9 @@
 
 	<div class="form_input">
 		<label>Clothing Style:
-		<select name="style">
+		<select name="style" class="form_dropdown">
 			{% for style in style_code %}
-			<option value="{{ style.code_desc }}" required>{{ style.code_desc }}</option>
+			<option value="{{ style.code_desc }}" required class="form_option">{{ style.code_desc }}</option>
 			{% endfor %}
 		</select>
 		</label>
@@ -35,9 +35,9 @@
 
 	<div class="form_input">
 		<label>Clothing Type:
-		<select name="type">
+		<select name="type" class="form_dropdown">
 			{% for type in item_type %}
-			<option value="{{ type.type_desc }}" requird>{{ type.type_desc }}</option>
+			<option value="{{ type.type_desc }}" requird class="form_option">{{ type.type_desc }}</option>
 			{% endfor %}
 		</select>
 		</label>
@@ -45,7 +45,7 @@
 
 	<div class="form_input">
 		<label>Optional Photo Url:
-			<input type="text" name="photo_url" >
+			<input type="text" name="photo_url">
 		</label>
 	</div>
 

@@ -42,11 +42,8 @@ def process_form():
     """Adds form results to database table Share or Wish"""
 
     current_user = session.get("user_id")
-    print "look at this"
     user = User.query.filter(User.user_id == current_user).first()
-    print "right here"
     user_email = user.email
-    print user_email
     post_type = request.form['post_type']
     size = request.form['size']
     style = request.form['style']
@@ -125,11 +122,18 @@ def process_registration():
 
     new_user = User(email=email, user_name=user_name, password=password)
 
-    db.session.add(new_user)
-    db.session.commit()
+    old_email = User.query.filter(User.email == email).first()
+    old_user_name = User.query.filter(User.user_name == user_name).first()
 
-    user = User.query.filter(User.email == email).first()
-    session["user_id"] = user.user_name
+    if old_email is None and old_user_name is None:
+        db.session.add(new_user)
+        db.session.commit()
+
+        user = User.query.filter(User.email == email).first()
+        session["user_id"] = user.user_name
+    else:
+        flash("That Username or Email is already in use")
+        return redirect('/register-form')
 
     flash('Welcome %s' % user_name)
     return redirect('/')
@@ -177,6 +181,7 @@ def process_update_user():
     return redirect('/')
 
 @app.route('/post-update')
+@login_required
 def select_post_update():
 	"""renders post selection form"""
 
@@ -189,12 +194,19 @@ def select_post_update():
 	return render_template('select_post.html', post=post)
 
 @app.route('/post-update/<int:post_id>')
+@login_required
 def update_post(post_id):
-	"""allows postings to be updated"""
+    """allows postings to be updated"""
 
-	post = Post.query.filter(Post.post_id == post_id).first()
+    current_user = session.get("user_id")
+    post = Post.query.filter(Post.post_id == post_id).first()
+    user = User.query.filter(User.user_id == current_user).first()
 
-	return render_template('post_update.html', post=post)
+    if user.email == post.user_email: 
+        return render_template('post_update.html', post=post)
+    else:
+        flash('This Post Does Not Belong To You!!!!')
+        return redirect('/')
 
 @app.route('/post-update/update/<int:post_id>', methods=['POST'])
 def proccess_update_post(post_id):
@@ -245,9 +257,15 @@ def faq():
 def test():
     """test function"""
     
+    size = Size.query.all()
    
-    return render_template('test_function.html')
+    return render_template('test_function.html', size=size)
 
+# @app.route('/test')
+# def render_test():
+
+
+#     return render_template('test_function.html')
 
 
 
@@ -255,7 +273,7 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension. Also, don't forget to 
     #change it to false before releasing it onto the internet!
-    app.debug = False
+    app.debug = True
 
     connect_to_db(app)
 

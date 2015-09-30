@@ -9,8 +9,8 @@
 Welcome {{ user.user_name }}
 </div>
 
-
-<div style="display: none" class="display sharing">
+<div class="user_page">
+<div style="display: none" class="display sharing personal">
 	{% for item in share %}
 	<div class="item">
 		<span class="item_text">
@@ -23,7 +23,7 @@ Welcome {{ user.user_name }}
 	{% endfor %}
 </div>
 
-<div class="display wanting">
+<div class="display wanting personal">
 	{% for item in wish %}
 	<div class="item">
 		<span class="item_text">
@@ -38,9 +38,18 @@ Welcome {{ user.user_name }}
 
 
 
-
-<a href="/update-user">Update Your Information Here</a>
-<a href="/post-update">Update Photo Here</a>
-<a href="/delete-posting">Delete Posts Here</a>
-
+<div class="sidebar">
+<ul>	
+	<li>
+		<a href="/update-user">Update Your Information Here</a>
+	</li>
+	<li>
+		<a href="/post-update">Update Photo Here</a>
+	</li>
+	<li>
+		<a href="/delete-posting">Delete Posts Here</a>
+	</li>
+</ul>
+</div>
+</div>
 {% endblock %}
